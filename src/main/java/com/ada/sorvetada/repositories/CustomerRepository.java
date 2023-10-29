@@ -1,4 +1,3 @@
-
 package com.ada.sorvetada.repositories;
 
 import com.ada.sorvetada.entities.Customer;
@@ -30,5 +29,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<Customer> findByEmail(String email);
 
     List<Customer> findAll();
+
+    Optional<Customer> findById(Long id);
 }
 

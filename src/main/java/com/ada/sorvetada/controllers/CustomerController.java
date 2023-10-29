@@ -1,4 +1,3 @@
-
 package com.ada.sorvetada.controllers;
 
 import com.ada.sorvetada.dtos.CustomerDto;
@@ -8,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -41,7 +41,7 @@ public class CustomerController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-  
+
     @PutMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CustomerDto> updateCustomer(@RequestBody CustomerDto customer) {
@@ -91,6 +91,22 @@ public class CustomerController {
     public ResponseEntity<Void> activateDisableCustomer(@PathVariable("id") Long id, @RequestParam("active") boolean active) {
         customerService.activateDisableCustomer(active, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PatchMapping("/password/{id}")
+    public ResponseEntity<String> updatePassord(@PathVariable("id") Long id,
+                                                @RequestBody HashMap<String, String> password) {
+        try {
+            return customerService.updatePassword(id, password);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping("/role")
+    public ResponseEntity<String> addRoles(@RequestParam("idCustomer") Long idCustomer,
+                                           @RequestParam("idRole") Long idRole) {
+        return customerService.insertRole(idCustomer, idRole);
     }
 
 //    @GetMapping("/{id}")

@@ -1,4 +1,3 @@
-
 package com.ada.sorvetada.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -6,6 +5,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table
@@ -26,6 +26,10 @@ public class Customer implements Serializable {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private List<CustomerAddress> addressList;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "customer_roles", joinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 
     public Customer() {
     }
@@ -93,6 +97,14 @@ public class Customer implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
 
