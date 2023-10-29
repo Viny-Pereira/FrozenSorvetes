@@ -5,6 +5,7 @@ import com.ada.sorvetada.entities.Customer;
 import com.ada.sorvetada.services.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -19,7 +20,8 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
+    @PreAuthorize("hasRole('ROLE_ADIM')")
     public List<Customer> getCustomer() {
         return customerService.getAll();
     }

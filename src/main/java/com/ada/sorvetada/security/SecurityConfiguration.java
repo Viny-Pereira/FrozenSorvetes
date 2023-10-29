@@ -45,7 +45,10 @@ public class SecurityConfiguration {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/sorvetada/api/login").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/sorvetada/api/customer").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/sorvetada/api/customer").permitAll()
+                        .requestMatchers("/sorvetada/api/customer/active").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/sorvetada/api/customer").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
